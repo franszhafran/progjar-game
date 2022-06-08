@@ -1,29 +1,36 @@
+from board import Board
 from match import Match
 from player import Player
 from random import randint
-from kivy.app import App
-from kivy.uix.widget import Widget
 
 def main():
-    match = Match("abc", [])
+    board = Board("abc", [])
     
     player_1 = Player("Zhafran", 0)
     player_2 = Player("Ubay", 1)
 
-    match.add_player(player_1)
-    match.add_player(player_2)
+    board.add_player(player_1)
+    board.add_player(player_2)
 
     n = 0
     while True:
         dice = randint(1, 6)
 
-        print(dice)
-        
+        print("Dice {}".format(dice))
+        board.print_troops()
         print("Player {} got {} step".format(n, dice))
-        i = input()
 
-        if match.move_player_troop_possible(n, int(i), dice):
-            match.move_player_troop(n, int(i), dice)
+        if board.player_troops_at_base(n) == 4 and dice != 6:
+            print("Skipping")
+            continue
+        
+        i = input("Enter troop number to move:")
+        i = int(i)
+        
+        if i == 5:
+            board.player_troop_out(n)
+        elif board.move_player_troop_possible(n, i, dice):
+            board.move_player_troop(n, i, dice)
         else:
             print("Not possible")
 
