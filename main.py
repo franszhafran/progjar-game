@@ -24,22 +24,28 @@ dice = 0
 state = "waiting" # waiting|play|roll
 state_lock = threading.Lock()
 gameplay_data = []
+players = []
 
 def main():
     board = Board("abc", [])
     
     player_1 = Player("Zhafran", 0)
     player_2 = Player("Ubay", 1)
+    players.append(player_1)
+    players.append(player_2)
     global player
     global dice
     global state
-    player = player_2
 
     board.add_player(player_1)
     board.add_player(player_2)
 
     n = 0
     while True:
+        try:
+            print("Player number", player.player_number)
+        except:
+            print("Player not initalized")
         print("acquiring state at main")
         state_lock.acquire()
         print("state", state)
@@ -143,10 +149,12 @@ def pull_message():
     while True:
         res = send_command("ask")
         try:
-            if res["status"] == "OK" and len(res["data"]) > 0:
-                print("put here")
-                print(res)
-                command_queue_recv.put(res)
+            if res["status"] == "OK":
+                if len(res["data"]) > 0:
+                    command_queue_recv.put(res)
+                else:
+                    if player is None:
+                        player = players[int(res["player_number"])]
         except:
             pass
         time.sleep(10)
