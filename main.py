@@ -80,6 +80,10 @@ def main():
                 print("Skipping")
                 state = "waiting"
                 send_command("continue")
+                n += 1
+
+                if n == 2:
+                    n = 0
                 continue
             else:
                 state = "play"

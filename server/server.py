@@ -66,6 +66,7 @@ def game_loop():
 
 	while True:
 		game_lock.acquire()
+		print(game["state"])
 		if game["state"] == "roll":
 			dice = random.randint(1, 6)
 			game["data"].append({
