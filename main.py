@@ -31,6 +31,7 @@ def main():
     player_2 = Player("Ubay", 1)
     global player
     global dice
+    global state
     player = player_1
 
     board.add_player(player_1)
@@ -38,11 +39,11 @@ def main():
 
     n = 0
     while True:
-        i = command_queue.get()
-        i = int(i)
+        if state == "play":
+            i = command_queue.get()
+            i = int(i)
         print("acquiring at main")
         state_lock.acquire()
-        global state
         print("state", state)
         if state == "waiting":
             state_lock.release()
@@ -61,8 +62,11 @@ def main():
                 n = 0
             state_lock.release()
         elif state == "roll":
-            x = str(command_queue_recv.get())
-            x.replace("dice_", "")
+            x = command_queue_recv.get()
+            print(x)
+            print(str(type(x)))
+            x = x["data"]["action"]
+            dice = x.replace("dice_", "")
             print("Dice {}".format(dice))
             board.print_troops()
             print("Player {} got {} step".format(n, dice))
@@ -103,6 +107,9 @@ def send_command(command_str=""):
         # to be able to use the data_received as a dict, need to load it using json.loads()
         data_received = data_received.replace("\r\n", "")
         hasil = json.loads(data_received)
+        print("hasil")
+        print(str(type(hasil)))
+        print(hasil)
         command_queue_recv.put(hasil)
         # logging.warning("data received from server:")
         sock.close()
