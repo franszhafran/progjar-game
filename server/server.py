@@ -29,7 +29,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			if rcv[-2:] == '\r\n':
 				# end of command, proses string
 				logging.warning("data dari client: {}".format(rcv))
-				hasil = self.proses(rcv)
+				hasil = self.proses(rcv, self.ip)
 				#hasil sudah dalam bentuk bytes
 				hasil = hasil + "\r\n\r\n".encode()
 				#agar bisa dioperasikan dengan string \r\n\r\n maka harus diencode dulu => bytes
@@ -42,7 +42,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			#self.send("{}" . format(httpserver.proses(d)))
 		self.close()
 
-	def proses(rcv, ip):
+	def proses(self, rcv, ip):
 		global game_lock
 		game_lock.acquire()
 		global game
@@ -121,6 +121,7 @@ class Server(asyncore.dispatcher):
 			print(game)
 			game_lock.release()
 			handler = ProcessTheClient(sock)
+			handler.ip = addr[0]
 
 def main():
 	t = threading.Thread(target=game_loop)
