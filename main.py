@@ -46,6 +46,7 @@ def main():
             print("Player number", player.player_number)
         except:
             print("Player not initalized")
+            continue
         print("acquiring state at main")
         state_lock.acquire()
         print("state", state)
