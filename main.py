@@ -40,7 +40,7 @@ def main():
     while True:
         i = command_queue.get()
         i = int(i)
-        
+        print("acquiring at main")
         state_lock.acquire()
         global state
         print("state", state)
@@ -114,7 +114,6 @@ def send_command(command_str=""):
 
 def pull_message():
     while True:
-        state_lock.acquire()
         res = send_command("ask")
         print(res)
         try:
@@ -122,8 +121,7 @@ def pull_message():
                 command_queue_recv.put(res["data"])
         except:
             pass
-        state_lock.release()
-        time.sleep(5)
+        time.sleep(10)
 
 def start():
     t = threading.Thread(target=main)
