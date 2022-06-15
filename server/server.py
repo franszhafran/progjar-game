@@ -65,6 +65,7 @@ def game_loop():
 				"ip": "server",
 				"action": "dice_{}".format(dice)
 			})
+			game["state"] == "play"
 		elif game["state"] == "play":
 			cmd = command_queue.get()
 			game["data"].append({
