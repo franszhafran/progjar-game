@@ -43,6 +43,7 @@ def main():
         
         state_lock.acquire()
         global state
+        print("state", state)
         if state == "waiting":
             state_lock.release()
             i = int(command_queue_recv.get())
@@ -80,9 +81,9 @@ def send_command(command_str=""):
     global server_address
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     sock.connect(server_address)
-    logging.warning(f"connecting to {server_address}")
+    # logging.warning(f"connecting to {server_address}")
     try:
-        logging.warning(f"sending message ")
+        # logging.warning(f"sending message ")
         command_str += "\r\n\r\n"
         sock.sendall(command_str.encode())
         # Look for the response, waiting until socket is done (no more data)
@@ -103,7 +104,7 @@ def send_command(command_str=""):
         data_received = data_received.replace("\r\n", "")
         hasil = json.loads(data_received)
         command_queue_recv.put(hasil)
-        logging.warning("data received from server:")
+        # logging.warning("data received from server:")
         sock.close()
         return hasil
     except Exception as e:
