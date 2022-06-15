@@ -3,8 +3,6 @@ html {
 }
 
 body{
-  /* background-image: linear-gradient(white, blue);
-  background-size: 100% auto; */
     background: -webkit-linear-gradient(to right, #8360c3, #2ebf91);
     background: linear-gradient(to right, #8360c3, #2ebf91)
 }
@@ -52,12 +50,6 @@ h2 {
         font-size: 24px;
 }
 
-.button:hover {
-    background-color: #B30D5D;
-    background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
-    background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
-}
-
 .container_button {
     align-items: center;
 }
@@ -70,9 +62,3 @@ h2 {
 .buttonMenu {
     padding-bottom: 15px;
 }
-/* 
-a:hover {
-    background-color: #B30D5D;
-        background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
-        background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
-} */
