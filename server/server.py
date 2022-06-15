@@ -29,7 +29,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			if rcv[-2:] == '\r\n':
 				# end of command, proses string
 				logging.warning("data dari client: {}".format(rcv))
-				hasil = self.proses(rcv, self.ip)
+				hasil = self.proses(rcv.replace("\r\n", ""), self.ip)
 				#hasil sudah dalam bentuk bytes
 				hasil = hasil + "\r\n\r\n".encode()
 				#agar bisa dioperasikan dengan string \r\n\r\n maka harus diencode dulu => bytes
