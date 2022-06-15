@@ -35,7 +35,7 @@
     border-radius: 50%;
     transition: all 2s;
     left:0px;
-    z-index:99;
+    z-index:5;
     background-color:black;
   }
   #green-1{
@@ -187,6 +187,42 @@
     border-collapse: collapse;
     border: 1px solid #e5e5e569 ;
   }
+
+  .base-red {
+      position:absolute;
+      width:35%;
+      height:35%;
+      left: 6%;
+      top: 5%;
+      z-index:10;
+  }
+
+    .base-green {
+        position:absolute;
+        width:35%;
+        height:35%;
+        right: 6%;
+        top: 5%;
+        z-index:10;
+    }
+
+    .base-blue {
+        position:absolute;
+        width:35%;
+        height:35%;
+        left: 6%;
+        bottom: 5%;
+        z-index:10;
+    }
+
+    .base-yellow {
+        position:absolute;
+        width:35%;
+        height:35%;
+        right: 6%;
+        bottom: 5%;
+        z-index:10;
+    }
   
   .safe {
     background-color: #99999938;
