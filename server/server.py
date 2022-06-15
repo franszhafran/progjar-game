@@ -3,11 +3,10 @@ import time
 import sys
 import asyncore
 import logging
-from http import HttpServer
 import threading
 import random
+import json
 
-httpserver = HttpServer()
 rcv = ""
 
 game = {
@@ -27,18 +26,30 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			if rcv[-2:] == '\r\n':
 				# end of command, proses string
 				logging.warning("data dari client: {}".format(rcv))
-				hasil = httpserver.proses(rcv)
+				hasil = self.proses(rcv)
 				#hasil sudah dalam bentuk bytes
 				hasil = hasil + "\r\n\r\n".encode()
 				#agar bisa dioperasikan dengan string \r\n\r\n maka harus diencode dulu => bytes
 				logging.warning("balas ke  client: {}".format(hasil))
 				self.send(hasil) #hasil sudah dalam bentuk bytes, kirimkan balik ke client
 				rcv = ""
-				# self.close()
+				self.close()
 
 		#self.send('HTTP/1.1 200 OK \r\n\r\n'.encode())
 			#self.send("{}" . format(httpserver.proses(d)))
-		# self.close()
+		self.close()
+
+	def proses(rcv):
+		global game_lock
+		game_lock.acquire()
+		global game
+		if rcv == "ask":
+			res = json.dumps({"status": "OK", "data": game["data"]})
+		else:
+			command_queue.put(rcv)
+			res = json.dumps({"status": "OK", "data": ""})
+		game_lock.release()
+		return res.encode()
 
 def game_loop():
 	global dice
