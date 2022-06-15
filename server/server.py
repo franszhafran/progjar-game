@@ -85,16 +85,17 @@ def game_loop():
 			print("cmd", cmd)
 			if cmd == "continue":
 				game["state"] = "roll" 
-			game["data"].append({
-				"ip": cmd["ip"],
-				"action": cmd["action"]
-			})
-			for i in range(4):
-				game["player_data_queue"][i].put({
-				"ip": cmd["ip"],
-				"action": cmd["action"]
-			})
-			game["state"] = "roll"
+			else:
+				game["data"].append({
+					"ip": cmd["ip"],
+					"action": cmd["action"]
+				})
+				for i in range(4):
+					game["player_data_queue"][i].put({
+					"ip": cmd["ip"],
+					"action": cmd["action"]
+				})
+				game["state"] = "roll"
 		elif game["state"] == "start":
 			dice = random.randint(1, 6)
 			game["data"].append({
