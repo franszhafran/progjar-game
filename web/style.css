@@ -191,6 +191,11 @@
     text-align: center;
     line-height: 2em;
   }
+
+  #green-1 {
+      left: 100px;
+      top: 600px;
+  }
   
   .side:nth-child(1) {
     transform: translateZ(3.1em); }
