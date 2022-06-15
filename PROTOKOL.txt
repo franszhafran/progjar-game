@@ -1,0 +1,61 @@
+FILE SERVER
+TUJUAN: melayani client dalam request file server
+
+ATURAN PROTOKOL:
+- client harus mengirimkan request dalam bentuk string
+- string harus dalam format
+  <JENIS REQUEST> <PARAMETER>\n
+  <BODY>(optional)
+- PARAMETER dapat berkembang menjadi PARAMETER1 spasi PARAMETER2 dan seterusnya
+
+REQUEST YANG DILAYANI:
+- informasi umum:
+  * Jika request tidak dikenali akan menghasilkan pesan
+    - status: ERROR
+    - data: request tidak dikenali
+  * Semua result akan diberikan dalam bentuk JSON dan diakhiri
+    dengan character ascii code #13#10#13#10 atau "\r\n\r\n"
+
+CREATE ROOM:
+* TUJUAN: untuk membuat match room
+* PARAMETER: tidak ada
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data: list file
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
+
+START ROOM:
+* TUJUAN: untuk start match room
+* PARAMETER: tidak ada
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data: list file
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
+
+ROLL DICE:
+* TUJUAN: meminta memutar dadu, pada saat yang sama server akan mengabarkan juga ke player lain
+* PARAMETER: tidak ada
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data: nomor dadu yang didapat
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
+
+MOVE:
+* TUJUAN: seorang pemain menjalankan player, pada saat yang sama server akan memberikan informasi ke player lain
+* PARAMETER: nomor koin yang dijalankan
+* RESULT:
+- BERHASIL:
+  - status: OK
+  - data: tidak ada
+- GAGAL:
+  - status: ERROR
+  - data: pesan kesalahan
