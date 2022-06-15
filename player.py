@@ -15,7 +15,9 @@ def gma(count: list, steps: list):
     res = []
     for i in range(len(count)):
         count_now = count[i]
-        res.append(gm(count_now, steps[i]))
+        gm_res = (gm(count_now, steps[i]))
+        for j in gm_res:
+            res.append(j)
     return res
 
 class Player:
@@ -42,7 +44,7 @@ class Player:
         5, 2, 5, 1, 
         5, 2, 5, 1, 
         5, 1], [
-            "right", + "upright", 
+            "right", "upright", 
             "up", "right", "down", "downright",
             "right", "down", "left", "downleft",
             "down", "left", "up", "upleft",
@@ -84,7 +86,7 @@ class Player:
         if troop.state == "regular_zone":
             for i in range(troop.position, troop.position + steps + 1):
                 self.last_steps.append(self.player_tiles[i])
-                self.last_steps_index = [i]
+                self.last_steps_index.append(i)
             troop.position += steps
             troop.x = self.player_tiles[troop.position]
             if troop.x >= Player.player_number_safezone_start[self.player_number]:
@@ -112,12 +114,11 @@ class Player:
                 troop.position += steps
                 troop.x = self.player_tiles[troop.position]
 
-        print(self.last_steps)
-
     def process_steps_to_movement(self, last_steps: list):
         move = []
         for i in last_steps:
-            move.append(self.player_tiles_move[self.player_number][i])
+            move.append(self.player_tiles_move[i])
+        move.pop()
         return move
                 
 
