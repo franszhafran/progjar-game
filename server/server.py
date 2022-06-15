@@ -102,6 +102,7 @@ class Server(asyncore.dispatcher):
 
 def main():
 	t = threading.Thread(target=game_loop)
+	t.start()
 	portnumber=8888
 	try:
 		portnumber=int(sys.argv[1])
