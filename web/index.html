@@ -16,10 +16,16 @@
       integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
       crossorigin="anonymous"
     ></script>
+    <script type="text/javascript" src="/eel.js"></script>
   </head>
   <body>
     <div class="overview">
       <div class="game">
+        <div id="base-red" class="base-red" onClick="js_click_handler(this)"></div>
+        <div id="base-green" class="base-green" onClick="js_click_handler(this)"></div>
+        <div id="base-blue" class="base-blue" onClick="js_click_handler(this)"></div>
+        <div id="base-yellow" class="base-yellow" onClick="js_click_handler(this)"></div>
+        
         <div class="green biji" id="green-1" onClick="move(this)"></div>
         <div class="green biji" id="green-2" onClick="move(this)"></div>
         <div class="green biji" id="green-3" onClick="move(this)"></div>
@@ -80,7 +86,6 @@
               </div>
             </div>
           </div>
-          </div>
           <div id="roll" class="roll-button"><button>Roll dice!</button></div>
         </div>
       </div>
@@ -89,6 +94,20 @@
   </body>
 </html>
 <script>
+    eel.expose(alert_func);
+    function alert_func(a) {
+        alert(a)
+    }
+
+    function js_click_handler(a) {
+        console.log("test")
+        console.log(a.id)
+        eel.handle_click(a.id)
+    }
+
+    function out_from_base() {
+
+    }
   function move(r) {
     $("#" + r.id).animate(
       {
@@ -183,6 +202,55 @@
       2
     );
   }
+
+    // dice
+    var elDiceOne       = document.getElementById('dice1');
+    var elComeOut       = document.getElementById('roll');
+    var lastDice = -1
+
+    elComeOut.onclick   = function () {rollDice();};
+
+    async function rollDice() {
+        console.log("msk rolldice")
+        eel.put_command(6)
+        const lena_kontol_memek_anjing = {
+            1: 1,
+            5: 2,
+            6: 3,
+            3: 4,
+            4: 5,
+            2: 6,
+        }
+
+        var diceOne = await eel.get_dice()()
+        console.log(diceOne);
+        diceOne = lena_kontol_memek_anjing[diceOne]
+        if(diceOne === lastDice) {
+            diceTemp = (diceOne * 3) % 7
+            for (var i = 1; i <= 6; i++) {
+                elDiceOne.classList.remove('show-' + i);
+                if (diceTemp === i) {
+                    elDiceOne.classList.add('show-' + i);
+                }
+            }
+            for (var i = 1; i <= 6; i++) {
+                elDiceOne.classList.remove('show-' + i);
+                if (diceOne === i) {
+                    elDiceOne.classList.add('show-' + i);
+                }
+            }
+        } else {
+            for (var i = 1; i <= 6; i++) {
+                elDiceOne.classList.remove('show-' + i);
+                if (diceOne === i) {
+                    elDiceOne.classList.add('show-' + i);
+                }
+            }
+        }
+        lastDice = diceOne
+        console.log(elDiceOne.classList)
+    }
+    // dice end
   function startblue1(r) {
     $("#blue-1").animate(
       {
