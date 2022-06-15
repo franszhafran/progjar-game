@@ -5,6 +5,7 @@ import asyncore
 import logging
 import threading
 import random
+import queue
 import json
 
 rcv = ""
@@ -13,7 +14,7 @@ game = {
 	"data": [],
 	"state": "roll",
 }
-command_queue = threading.Queue()
+command_queue = queue.Queue()
 game_lock = threading.Lock()
 
 class ProcessTheClient(asyncore.dispatcher_with_send):
