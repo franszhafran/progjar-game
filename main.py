@@ -73,7 +73,7 @@ def main():
                 state = "play"
             state_lock.release()
 
-server_address=('45.118.135.250', 8000)
+server_address=('45.118.135.250', 8888)
 
 def send_command(command_str=""):
     global server_address
