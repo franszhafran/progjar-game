@@ -60,16 +60,17 @@ def main():
                 n = 0
             state_lock.release()
         elif state == "roll":
-            if i == 6:
-                dice = randint(1, 6)
-                print("Dice {}".format(dice))
-                board.print_troops()
-                print("Player {} got {} step".format(n, dice))
+            x = str(command_queue_recv.get())
+            x.replace("dice_", "")
+            print("Dice {}".format(dice))
+            board.print_troops()
+            print("Player {} got {} step".format(n, dice))
 
-                if board.player_troops_at_base(n) == 4 and dice != 6:
-                    print("Skipping")
-                    state = "waiting"
-                    continue
+            if board.player_troops_at_base(n) == 4 and dice != 6:
+                print("Skipping")
+                state = "waiting"
+                continue
+            else:
                 state = "play"
             state_lock.release()
 
@@ -99,7 +100,9 @@ def send_command(command_str=""):
                 break
         # at this point, data_received (string) will contain all data coming from the socket
         # to be able to use the data_received as a dict, need to load it using json.loads()
+        data_received = data_received.replace("\r\n", "")
         hasil = json.loads(data_received)
+        command_queue_recv.put(hasil)
         logging.warning("data received from server:")
         sock.close()
         return hasil
