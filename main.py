@@ -101,7 +101,7 @@ def send_command(command_str=""):
         # to be able to use the data_received as a dict, need to load it using json.loads()
         hasil = json.loads(data_received)
         logging.warning("data received from server:")
-        socket.close()
+        sock.close()
         return hasil
     except Exception as e:
         print(e)
