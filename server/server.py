@@ -61,6 +61,7 @@ def game_loop():
 		game_lock.acquire()
 		if game["state"] == "roll":
 			dice = random.randint(1, 6)
+			dice = random.randint(1, 6)
 			game["data"].append({
 				"ip": "server",
 				"action": "dice_{}".format(dice)
@@ -80,6 +81,8 @@ def game_loop():
 				"action": "dice_{}".format(dice)
 			})
 		game_lock.release()
+		time.sleep(5)
+		
 class Server(asyncore.dispatcher):
 	def __init__(self,portnumber):
 		asyncore.dispatcher.__init__(self)
