@@ -102,7 +102,8 @@ def send_command(command_str=""):
         logging.warning("data received from server:")
         socket.close()
         return hasil
-    except:
+    except Exception as e:
+        print(e)
         logging.warning("error during data receiving")
         return False
 
