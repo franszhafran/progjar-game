@@ -30,6 +30,7 @@ h2 {
         cursive;
     color: white;
     font-size: 5ch;
+    align-items: center;
 }
 
 .flex-container {
@@ -61,25 +62,17 @@ h2 {
     align-items: center;
 }
 
+.container {
+    text-align: center;
+    align-items: center;
+}
+
 .buttonMenu {
     padding-bottom: 15px;
 }
-
-a {
-    background-color: #4CAF50;
-        /* Green */
-        border: none;
-        color: white;
-        padding: 20px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 24px;
-        font-family: Arial, Helvetica, sans-serif;
-}
-
+/* 
 a:hover {
     background-color: #B30D5D;
         background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
         background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
-}
+} */
