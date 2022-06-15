@@ -4,9 +4,18 @@ import sys
 import asyncore
 import logging
 from http import HttpServer
+import threading
+import random
 
 httpserver = HttpServer()
 rcv = ""
+
+game = {
+	"data": [],
+	"state": "roll",
+}
+command_queue = threading.Queue()
+game_lock = threading.Lock()
 
 class ProcessTheClient(asyncore.dispatcher_with_send):
 	def handle_read(self):
@@ -31,6 +40,32 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			#self.send("{}" . format(httpserver.proses(d)))
 		# self.close()
 
+def game_loop():
+	global dice
+	global command_queue
+
+	while True:
+		game_lock.acquire()
+		if game["state"] == "roll":
+			dice = random.randint(1, 6)
+			game["data"].append({
+				"ip": "server",
+				"action": "dice_{}".format(dice)
+			})
+		elif game["state"] == "play":
+			cmd = command_queue.get()
+			game["data"].append({
+				"ip": cmd["ip"],
+				"action": cmd["action"]
+			})
+			game["state"] = "roll"
+		elif game["state"] == "start":
+			dice = random.randint(1, 6)
+			game["data"].append({
+				"ip": "server",
+				"action": "dice_{}".format(dice)
+			})
+		game_lock.release()
 class Server(asyncore.dispatcher):
 	def __init__(self,portnumber):
 		asyncore.dispatcher.__init__(self)
@@ -45,9 +80,13 @@ class Server(asyncore.dispatcher):
 		if pair is not None:
 			sock, addr = pair
 			logging.warning("connection from {}" . format(repr(addr)))
+			game_lock.acquire()
+			game["player_data"].append(addr)
+			game_lock.release()
 			handler = ProcessTheClient(sock)
 
 def main():
+	t = threading.Thread(target=game_loop)
 	portnumber=8888
 	try:
 		portnumber=int(sys.argv[1])
