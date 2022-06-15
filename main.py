@@ -117,7 +117,7 @@ def pull_message():
         except:
             pass
         state_lock.release()
-        time.sleep(1)
+        time.sleep(5)
 
 def start():
     t = threading.Thread(target=main)
