@@ -44,7 +44,8 @@ def main():
     while True:
         try:
             print("Player number", player.player_number)
-        except:
+            n = player.player_number
+        except Exception as e:
             continue
         print("acquiring state at main")
         state_lock.acquire()
@@ -58,17 +59,18 @@ def main():
             state_lock.release()
             x = command_queue_recv.get()
             gameplay_data.append(x)
+            state_lock.acquire()
             print(x)
             print(str(type(x)))
+            if len(x["data"]) == 0:
+                continue
             try:
                 x = x["data"]["action"]
             except:
-                state_lock.release()
                 continue
             print(x)
             gameplay_data.append(x)
             data = x.split("_")
-            n = data[1]
             if int(data[1]) != player.player_number:
                 print("Not our action, skipping")
                 state_lock.release()
@@ -83,10 +85,6 @@ def main():
                 print("Skipping")
                 state = "waiting"
                 send_command("continue")
-                n += 1
-
-                if n == 2:
-                    n = 0
                 state_lock.release()
                 continue
             else:
@@ -99,11 +97,6 @@ def main():
                 board.move_player_troop(n, i, dice)
             else:
                 print("Not possible")
-
-            n += 1
-
-            if n == 2:
-                n = 0
             state_lock.release()
         elif state == "roll":
             print("state:", state)
@@ -150,11 +143,12 @@ def pull_message():
         res = send_command("ask")
         try:
             print(res)
-            print(type(str(res)))
+            print(str(type(res)))
             if res["status"] == "OK":
                 if len(res["data"]) > 0:
                     command_queue_recv.put(res)
                 else:
+                    global player
                     if player is None:
                         player = players[int(res["player_number"])]
         except:
