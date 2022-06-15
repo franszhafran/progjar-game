@@ -220,6 +220,7 @@
   button {
     position: relative;
     top:80px;
+    left: 50px;
     padding: 15px 50px;
     color: #fff;
     background-color: #f4d35e;
@@ -238,9 +239,9 @@
   }
   
   .dice {
-    display: flex;
+    position: relative;
     margin-top:100px;
-    margin-left: 30px;
+    /* margin-left: 30px; */
     width: 10vh;
     height: 10vh;
     transform-style: preserve-3d;
@@ -256,12 +257,9 @@
     box-shadow: inset 2px 2px #d90429;}
   
   .dice-one {
-    left: 450px; }
-  
-  .dice-two {
-    left: 300px;
-    top:-200px;
-  }
+    
+    left: 65px; }
+
   
   .side {
     position: absolute;
