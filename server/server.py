@@ -12,6 +12,7 @@ rcv = ""
 
 game = {
 	"data": [],
+	"player_data": [],
 	"state": "roll",
 }
 command_queue = queue.Queue()
@@ -40,7 +41,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			#self.send("{}" . format(httpserver.proses(d)))
 		self.close()
 
-	def proses(rcv):
+	def proses(rcv, ip):
 		global game_lock
 		game_lock.acquire()
 		global game
@@ -94,6 +95,7 @@ class Server(asyncore.dispatcher):
 			logging.warning("connection from {}" . format(repr(addr)))
 			game_lock.acquire()
 			game["player_data"].append(addr)
+			print(game["player_data"])
 			game_lock.release()
 			handler = ProcessTheClient(sock)
 
