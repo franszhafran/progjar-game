@@ -57,12 +57,20 @@ h2 {
     background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
 }
 
+.container_button {
+    align-items: center;
+}
+
+.buttonMenu {
+    padding-bottom: 15px;
+}
+
 a {
     background-color: #4CAF50;
         /* Green */
         border: none;
         color: white;
-        padding: 15px 32px;
+        padding: 20px;
         text-align: center;
         text-decoration: none;
         display: inline-block;
