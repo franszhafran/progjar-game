@@ -23,7 +23,8 @@
     background-size: contain;
   }
   body {
-    background-color:black;
+    background: -webkit-linear-gradient(to right, #8360c3, #2ebf91);
+      background: linear-gradient(to right, #8360c3, #2ebf91)
   }
   .green {
     background-color: #66bb6a;
