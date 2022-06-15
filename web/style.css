@@ -8,6 +8,8 @@
   
   .overview{
     display: flex;
+    padding-top: 10vh;
+    padding-left: 10vh;
   }
   
   .game {
