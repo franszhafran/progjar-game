@@ -82,6 +82,9 @@ def game_loop():
 			game_lock.release()
 			cmd = command_queue.get()
 			game_lock.acquire()
+			print("cmd", cmd)
+			if cmd == "continue":
+				game["state"] = "roll" 
 			game["data"].append({
 				"ip": cmd["ip"],
 				"action": cmd["action"]

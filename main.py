@@ -74,6 +74,7 @@ def main():
             if board.player_troops_at_base(n) == 4 and dice != 6:
                 print("Skipping")
                 state = "waiting"
+                send_command("continue")
                 continue
             else:
                 state = "play"
