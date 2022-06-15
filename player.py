@@ -1,7 +1,23 @@
 from troop import Troop
 
+# generate left to right
 def glr(a: int, b: int) -> list:
     return list(range(a, b+1))
+
+# generate move
+def gm(a: int, move: str) -> list:
+    x = []
+    for i in range(a):
+        x.append(move)
+    return x
+
+def gma(count: list, steps: list):
+    res = []
+    for i in range(len(count)):
+        count_now = count[i]
+        res.append(gm(count_now, steps[i]))
+    return res
+
 class Player:
     player_number_start = [1, 14, 27, 40]
     player_number_safezone_start = [52, 58, 64, 70]
@@ -15,6 +31,25 @@ class Player:
         glr(40, 51) + glr(0, 38) + glr(70, 75)
     ]
 
+    player_tiles_move = [
+        gm(4, "up") + ["upleft"] + 
+        gm(5, "left") + gm(2, "up") + gm(5, "right") + ["upright"] + 
+        gm(5, "up") + gm(2, "right") + gm(5, "down") + ["downright"] +
+        gm(5, "right") + gm(2, "down") + gm(5, "left") + ["downleft"] +
+        gm(5, "down") + gm(1, "left"),
+        gma([4, 1,
+        5, 2, 5, 1, 
+        5, 2, 5, 1, 
+        5, 2, 5, 1, 
+        5, 1], [
+            "right", + "upright", 
+            "up", "right", "down", "downright",
+            "right", "down", "left", "downleft",
+            "down", "left", "up", "upleft",
+            "left", "up"
+        ])
+    ]
+
     def __init__(self, name: str, player_number: int):
         self.name = name
         self.troops_on_base = list(range(0, 4))
@@ -22,6 +57,7 @@ class Player:
         self.troop_position = [-1, -1, -1, -1]
         self.last_steps = []
         self.player_tiles = Player.player_tiles[self.player_number]
+        self.player_tiles_move = Player.player_tiles_move[self.player_number]
 
         self.generate_troop()
 
@@ -44,9 +80,11 @@ class Player:
     def move_troop(self, troop_number: int, steps: int):
         troop = self.troops[troop_number]
         self.last_steps = []
+        self.last_steps_index = []
         if troop.state == "regular_zone":
             for i in range(troop.position, troop.position + steps + 1):
                 self.last_steps.append(self.player_tiles[i])
+                self.last_steps_index = [i]
             troop.position += steps
             troop.x = self.player_tiles[troop.position]
             if troop.x >= Player.player_number_safezone_start[self.player_number]:
@@ -73,6 +111,14 @@ class Player:
                     self.last_steps.append(self.player_tiles[i])
                 troop.position += steps
                 troop.x = self.player_tiles[troop.position]
+
+        print(self.last_steps)
+
+    def process_steps_to_movement(self, last_steps: list):
+        move = []
+        for i in last_steps:
+            move.append(self.player_tiles_move[self.player_number][i])
+        return move
                 
 
     def troop_drown(self, troop_number: int):
