@@ -1,7 +1,7 @@
 import eel
 from random import randint
 from client_processor import *
-from main import main
+# from main import main
   
 eel.init("web")  
   
