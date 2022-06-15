@@ -21,8 +21,9 @@ color_map = [
 ]
 dice = 0
 
-state = "roll" # waiting|play|roll
+state = "waiting" # waiting|play|roll
 state_lock = threading.Lock()
+gameplay_data = []
 
 def main():
     board = Board("abc", [])
@@ -32,42 +33,38 @@ def main():
     global player
     global dice
     global state
-    player = player_1
+    player = player_2
 
     board.add_player(player_1)
     board.add_player(player_2)
 
     n = 0
     while True:
-        if state == "play":
-            i = command_queue.get()
-            i = int(i)
-        print("acquiring at main")
+        print("acquiring state at main")
         state_lock.acquire()
         print("state", state)
-        if state == "waiting":
+        if state == "play":
             state_lock.release()
-            i = int(command_queue_recv.get())
-        elif state == "play":
-            if i == 5:
-                board.player_troop_out(n)
-            elif board.move_player_troop_possible(n, i, dice):
-                board.move_player_troop(n, i, dice)
-            else:
-                print("Not possible")
-
-            n += 1
-
-            if n == 2:
-                n = 0
+            i = command_queue.get()
+            i = int(i)
+            continue
+        elif state == "waiting":
             state_lock.release()
-        elif state == "roll":
             x = command_queue_recv.get()
+            gameplay_data.append(x)
             print(x)
             print(str(type(x)))
-            x = x["data"]["action"]
+            try:
+                x = x["data"]["action"]
+            except:
+                state_lock.release()
+                continue
+            print(x)
+            gameplay_data.append(x)
             data = x.split("_")
+            n = data[1]
             if int(data[1]) != player.player_number:
+                print("Not our action, skipping")
                 state_lock.release()
                 continue
 
@@ -84,10 +81,26 @@ def main():
 
                 if n == 2:
                     n = 0
+                state_lock.release()
                 continue
             else:
                 state = "play"
             state_lock.release()
+        elif state == "play":
+            if i == 5:
+                board.player_troop_out(n)
+            elif board.move_player_troop_possible(n, i, dice):
+                board.move_player_troop(n, i, dice)
+            else:
+                print("Not possible")
+
+            n += 1
+
+            if n == 2:
+                n = 0
+            state_lock.release()
+        elif state == "roll":
+            print("state:", state)
 
 server_address=('45.118.135.250', 8888)
 
@@ -97,7 +110,7 @@ def send_command(command_str=""):
     sock.connect(server_address)
     # logging.warning(f"connecting to {server_address}")
     try:
-        # logging.warning(f"sending message ")
+        logging.warning(f"sending message ", command_str)
         command_str += "\r\n\r\n"
         sock.sendall(command_str.encode())
         # Look for the response, waiting until socket is done (no more data)
@@ -129,10 +142,11 @@ def send_command(command_str=""):
 def pull_message():
     while True:
         res = send_command("ask")
-        print(res)
         try:
-            if res["status"] == "OK":
-                command_queue_recv.put(res["data"])
+            if res["status"] == "OK" and len(res["data"]) > 0:
+                print("put here")
+                print(res)
+                command_queue_recv.put(res)
         except:
             pass
         time.sleep(10)

@@ -75,9 +75,9 @@ def game_loop():
 			})
 			for i in range(4):
 				game["player_data_queue"][i].put({
-				"ip": "server",
-				"action": "dice_{}_{}".format(player_now, dice)
-			})
+					"ip": "server",
+					"action": "dice_{}_{}".format(player_now, dice)
+				})
 			player_now += 1
 			if player_now == 2:
 				player_now = 0
