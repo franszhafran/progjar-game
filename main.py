@@ -45,7 +45,6 @@ def main():
         try:
             print("Player number", player.player_number)
         except:
-            print("Player not initalized")
             continue
         print("acquiring state at main")
         state_lock.acquire()
@@ -150,6 +149,8 @@ def pull_message():
     while True:
         res = send_command("ask")
         try:
+            print(res)
+            print(type(str(res)))
             if res["status"] == "OK":
                 if len(res["data"]) > 0:
                     command_queue_recv.put(res)
