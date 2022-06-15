@@ -94,7 +94,7 @@ class Server(asyncore.dispatcher):
 			sock, addr = pair
 			logging.warning("connection from {}" . format(repr(addr)))
 			game_lock.acquire()
-			if addr not in game["player_data"]:
+			if addr[0] not in game["player_data"]:
 				game["player_data"].append(addr[0])
 			print(game["player_data"])
 			game_lock.release()
