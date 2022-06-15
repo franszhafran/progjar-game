@@ -52,7 +52,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			data = []
 			while not game["player_data_queue"][index].empty():
 				data = game["player_data_queue"][index].get()
-			res = json.dumps({"status": "OK", "data": data})
+			res = json.dumps({"status": "OK", "player_number": int(index), "data": data})
 		else:
 			command_queue.put(rcv)
 			res = json.dumps({"status": "OK", "data": ""})
