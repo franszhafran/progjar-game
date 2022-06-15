@@ -1,0 +1,77 @@
+html {
+    height: 100%;
+}
+
+body{
+  /* background-image: linear-gradient(white, blue);
+  background-size: 100% auto; */
+    background: -webkit-linear-gradient(to right, #8360c3, #2ebf91);
+    background: linear-gradient(to right, #8360c3, #2ebf91)
+}
+
+img {
+    height: auto;
+    width: 350px;
+    text-align: middle;
+    margin: auto;
+    filter: drop-shadow(10px 10px 10px gray);
+}
+
+.logo{
+    text-align: center;
+        margin: auto;
+        z-index: 10;
+        margin-top: 75px;
+        padding-bottom: 30px;
+}
+
+h2 {
+    font-family: 'Fascinate',
+        cursive;
+    color: white;
+    font-size: 5ch;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+        align-items: center;
+}
+
+.button {
+    display: flexbox;
+    background-color: #4CAF50;
+        /* Green */
+        border: none;
+        color: white;
+        /* padding: 15px 32px; */
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+}
+
+.button:hover {
+    background-color: #B30D5D;
+    background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
+    background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+}
+
+a {
+    background-color: #4CAF50;
+        /* Green */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 24px;
+        font-family: Arial, Helvetica, sans-serif;
+}
+
+a:hover {
+    background-color: #B30D5D;
+        background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
+        background-image: linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+}
