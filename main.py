@@ -66,7 +66,12 @@ def main():
             print(x)
             print(str(type(x)))
             x = x["data"]["action"]
-            dice = x.replace("dice_", "")
+            data = x.split("_")
+            if int(data[1]) != player.player_number:
+                state_lock.release()
+                continue
+
+            dice = int(data[2])
             print("Dice {}".format(dice))
             board.print_troops()
             print("Player {} got {} step".format(n, dice))

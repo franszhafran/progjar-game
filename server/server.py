@@ -62,46 +62,38 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 def game_loop():
 	global dice
 	global command_queue
+	player_now = 0
 
 	while True:
 		game_lock.acquire()
 		if game["state"] == "roll":
 			dice = random.randint(1, 6)
-			dice = random.randint(1, 6)
 			game["data"].append({
 				"ip": "server",
-				"action": "dice_{}".format(dice)
+				"action": "dice_{}_{}".format(player_now, dice)
 			})
 			for i in range(4):
 				game["player_data_queue"][i].put({
 				"ip": "server",
-				"action": "dice_{}".format(dice)
+				"action": "dice_{}_{}".format(player_now, dice)
 			})
+			player_now += 1
+			if player_now == 2:
+				player_now = 0
 			game["state"] = "play"
 		elif game["state"] == "play":
 			game_lock.release()
 			cmd = command_queue.get()
 			game_lock.acquire()
 			print("cmd", cmd)
-			if cmd == "continue":
-				game["state"] = "roll" 
-			else:
-				game["data"].append({
-					"ip": cmd["ip"],
-					"action": cmd["action"]
-				})
-				for i in range(4):
-					game["player_data_queue"][i].put({
-					"ip": cmd["ip"],
-					"action": cmd["action"]
-				})
-				game["state"] = "roll"
-		elif game["state"] == "start":
-			dice = random.randint(1, 6)
 			game["data"].append({
-				"ip": "server",
-				"action": "dice_{}".format(dice)
+				"action": cmd
 			})
+			for i in range(4):
+				game["player_data_queue"][i].put({
+					"action": cmd
+				})
+			game["state"] = "roll"
 		game_lock.release()
 		time.sleep(5)
 
