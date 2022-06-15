@@ -1,5 +1,7 @@
 import eel
 from random import randint
+from client_processor import *
+from main import main
   
 eel.init("web")  
   
@@ -10,4 +12,4 @@ def random_python():
     return randint(1,100)
   
 # Start the index.html file
-eel.start("index.html")
+eel.start("menu.html")
