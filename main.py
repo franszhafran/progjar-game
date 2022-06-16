@@ -71,8 +71,8 @@ def main():
                 print("test")
                 board.move_player_troop(n, i, last_dice)
                 steps = board.players[n].last_steps_index
-                player = board.players[n]
-                movement = player.process_steps_to_movement(steps)
+                your_player = board.players[n]
+                movement = your_player.process_steps_to_movement(steps)
                 troop_id = "{}-1".format(color)
                 print("dd")
                 eel.move_troop(troop_id, movement)
