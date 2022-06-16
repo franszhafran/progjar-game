@@ -74,7 +74,7 @@ def main():
                 movement = player.process_steps_to_movement(steps)
                 troop_id = "{}-1".format(color)
                 eel.move_troop(troop_id, movement)
-                send_command("troopmove_{}_{}_{}".format(n, 3, steps))
+                send_command("troopmove_{}_{}_{}".format(n, 3, last_dice))
             state_lock.acquire()
             state = "waiting"
             state_lock.release()
