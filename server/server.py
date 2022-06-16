@@ -130,11 +130,11 @@ class Server(asyncore.dispatcher):
 			sock, addr = pair
 			logging.warning("connection from {}" . format(repr(addr)))
 			game_lock.acquire()
-			if addr[0] not in game["player_data"]:
-				game["player_data"].append(addr[0])
+			if str(addr[0]) not in game["player_data"]:
+				game["player_data"].append(str(addr[0]))
 			game_lock.release()
 			handler = ProcessTheClient(sock)
-			handler.ip = addr[0]
+			handler.ip = str(addr[0])
 
 def main():
 	t = threading.Thread(target=game_loop)
