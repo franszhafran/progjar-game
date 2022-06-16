@@ -107,15 +107,16 @@ def main():
                         bar = getattr(eel, func_name)
                         result = bar()
                     elif "troopmove" in action:
-                        player_number = int(data[1])
-                        troop_number = int(data[2])
-                        steps = int(data[3])
-                        board.move_player_troop(player_number, troop_number, steps)
-                        func_name = "{}-1".format(color_map[player_number])
-                        steps = board.players[player_number].last_steps_index
-                        player = board.players[player_number]
-                        movement = player.process_steps_to_movement(steps)
-                        eel.move_troop(func_name, movement)
+                        if int(data[1]) != player.player_number:
+                            player_number = int(data[1])
+                            troop_number = int(data[2])
+                            steps = int(data[3])
+                            board.move_player_troop(player_number, troop_number, steps)
+                            func_name = "{}-1".format(color_map[player_number])
+                            steps = board.players[player_number].last_steps_index
+                            player = board.players[player_number]
+                            movement = player.process_steps_to_movement(steps)
+                            eel.move_troop(func_name, movement)
                     elif "dice" in action:
                         print("Printing dice data", int(data[1]), player.player_number)
 
