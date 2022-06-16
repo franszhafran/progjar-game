@@ -48,6 +48,8 @@ def main():
         except Exception as e:
             continue
         print("acquiring state at main")
+        print("Gameplay data")
+        print(gameplay_data)
         state_lock.acquire()
         print("state", state)
         if state == "play":
@@ -58,8 +60,8 @@ def main():
         elif state == "waiting":
             state_lock.release()
             x = command_queue_recv.get()
-            gameplay_data.append(x)
             state_lock.acquire()
+            print("waiting res")
             print(x)
             print(str(type(x)))
             if len(x["data"]) == 0:
@@ -71,6 +73,8 @@ def main():
             print(x)
             gameplay_data.append(x)
             data = x.split("_")
+            print("Printing dice data", int(data[1]), player.player_number)
+
             if int(data[1]) != player.player_number:
                 print("Not our action, skipping")
                 state_lock.release()
@@ -109,7 +113,8 @@ def send_command(command_str=""):
     sock.connect(server_address)
     # logging.warning(f"connecting to {server_address}")
     try:
-        logging.warning("sending message".format(command_str))
+        print("sending message::bottom")
+        print(command_str)
         command_str += "\r\n\r\n"
         sock.sendall(command_str.encode())
         # Look for the response, waiting until socket is done (no more data)
@@ -132,6 +137,8 @@ def send_command(command_str=""):
         command_queue_recv.put(hasil)
         # logging.warning("data received from server:")
         sock.close()
+        print("response from::{}".format(command_str))
+        print(hasil)
         return hasil
     except Exception as e:
         print(e)
@@ -142,6 +149,7 @@ def pull_message():
     while True:
         res = send_command("ask")
         try:
+            print("res top")
             print(res)
             print(str(type(res)))
             if res["status"] == "OK":

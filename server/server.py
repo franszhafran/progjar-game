@@ -28,12 +28,12 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 			rcv = rcv + d
 			if rcv[-2:] == '\r\n':
 				# end of command, proses string
-				logging.warning("data dari client: {}".format(rcv))
+				# logging.warning("data dari client: {}".format(rcv))
 				hasil = self.proses(rcv.replace("\r\n", ""), self.ip)
 				#hasil sudah dalam bentuk bytes
 				hasil = hasil + "\r\n\r\n".encode()
 				#agar bisa dioperasikan dengan string \r\n\r\n maka harus diencode dulu => bytes
-				logging.warning("balas ke  client: {}".format(hasil))
+				# logging.warning("balas ke  client: {}".format(hasil))
 				self.send(hasil) #hasil sudah dalam bentuk bytes, kirimkan balik ke client
 				rcv = ""
 				self.close()
@@ -69,6 +69,7 @@ def game_loop():
 		print(game["state"])
 		if game["state"] == "roll":
 			dice = random.randint(1, 6)
+			print("appending atas {}".format("dice_{}_{}".format(player_now, dice)))
 			game["data"].append({
 				"ip": "server",
 				"action": "dice_{}_{}".format(player_now, dice)
@@ -84,6 +85,7 @@ def game_loop():
 			cmd = command_queue.get()
 			game_lock.acquire()
 			print("cmd", cmd)
+			print("appending bawah {}".format("dice_{}_{}".format(player_now, dice)))
 			game["data"].append({
 				"action": cmd
 			})
