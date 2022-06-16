@@ -91,8 +91,8 @@ def main():
                     data = action.split("_")
 
                     if "troopout" in action:
-                        player_number = data[1]
-                        troop_number = data[2]
+                        player_number = int(data[1])
+                        troop_number = int(data[2])
                         board.player_troop_out(player_number)
                         func_name = "start{}1".format(color_map[player_number])
                         bar = getattr(eel, func_name)
