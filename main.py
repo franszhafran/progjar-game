@@ -72,9 +72,9 @@ def main():
                 steps = board.players[n].last_steps_index
                 player = board.players[n]
                 movement = player.process_steps_to_movement(steps)
-                print(movement)
                 troop_id = "{}-1".format(color)
                 eel.move_troop(troop_id, movement)
+                send_command("troopmove_{}_{}_{}".format(n, 3, steps))
             state_lock.acquire()
             state = "waiting"
             state_lock.release()
@@ -102,6 +102,16 @@ def main():
                         func_name = "start{}1".format(color_map[player_number])
                         bar = getattr(eel, func_name)
                         result = bar()
+                    elif "troopmove" in action:
+                        player_number = int(data[1])
+                        troop_number = int(data[2])
+                        steps = int(data[3])
+                        board.move_player_troop(player_number, troop_number, steps)
+                        func_name = "{}-1".format(color_map[player_number])
+                        steps = board.players[player_number].last_steps_index
+                        player = board.players[player_number]
+                        movement = player.process_steps_to_movement(steps)
+                        eel.move_troop(func_name, movement)
                     elif "dice" in action:
                         print("Printing dice data", int(data[1]), player.player_number)
 
