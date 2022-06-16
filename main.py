@@ -114,8 +114,8 @@ def main():
                             board.move_player_troop(player_number, troop_number, steps)
                             func_name = "{}-1".format(color_map[player_number])
                             steps = board.players[player_number].last_steps_index
-                            player = board.players[player_number]
-                            movement = player.process_steps_to_movement(steps)
+                            opponent_player = board.players[player_number]
+                            movement = opponent_player.process_steps_to_movement(steps)
                             eel.move_troop(func_name, movement)
                             state = "waiting"
                     elif "dice" in action:
