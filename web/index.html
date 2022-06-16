@@ -114,16 +114,14 @@
   eel.expose(move_troop)
   function move_troop(troop_id, movement) {
     var troop_id_var = troop_id
-    alert("masuk")
+    console.log("msk")
     function move_func(value, index, array) {
-      var fnparams = [troop_id_var]
-      var fnstring = value
-
-      // find object
-      var fn = window[fnstring];
-
-      // is object a function?
-      if (typeof fn === "function") fn.apply(null, fnparams);
+      console.log(value)
+      if(value == "up") {
+        up(troop_id_var)
+      } else if(value == "right") {
+        right(troop_id_var)
+      }
     }
     movement.forEach(move_func)
   }
