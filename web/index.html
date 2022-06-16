@@ -113,19 +113,19 @@
   }
   eel.expose(move_troop)
   function move_troop(troop_id, movement) {
-    var troop_id_var = troop_id
-    console.log("msk")
-    console.log(movement)
-    for (let i = 0; i < movement.length; i++) {
-      let value = movement[i]
-      console.log(value)
-      if(value == "up") {
-        up(troop_id_var)
-      } else if(value == "right") {
-        right(troop_id_var)
-      }
-    }
+    var chain = function(el, toAnimate, ix) {
+      if(ix < toAnimate.length) {
+        $("#" + el).stop().animate(
+          {
+            top: "-=40px",
+          }, 
+          2).promise().done(function(){ 
+            chain(el, toAnimate, ix + 1 )
+        })
+    }}
+    chain(troop_id, ["a", "b", "c"], 0)
   }
+  
   function start() {
     $("#green-1").css(
       {
