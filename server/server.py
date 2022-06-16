@@ -73,7 +73,10 @@ def game_loop():
 		print(game["state"])
 		print(game)
 		if game["state"] == "roll":
-			dice = 6
+			if(len(game["data"])) > 2:
+				dice = random.randint(1,5)
+			else:
+				dice = 6
 			print("appending atas {}".format("dice_{}_{}".format(player_now, dice)))
 			game["data"].append({
 				"ip": "server",
