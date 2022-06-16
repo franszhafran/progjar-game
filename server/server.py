@@ -124,6 +124,7 @@ class Server(asyncore.dispatcher):
 		logging.warning("running on port {}" . format(portnumber))
 
 	def handle_accept(self):
+		global game_lock
 		pair = self.accept()
 		if pair is not None:
 			sock, addr = pair
