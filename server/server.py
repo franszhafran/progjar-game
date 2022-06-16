@@ -48,6 +48,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 		global game
 		print(rcv, ip)
 		index = game["player_data"].index(ip)
+		print("dapat index", index)
 		if rcv == "ask":
 			data = []
 			while not game["player_data_queue"][index].empty():
