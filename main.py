@@ -73,6 +73,9 @@ def main():
                 player = board.players[n]
                 movement = player.process_steps_to_movement(steps)
                 print(movement)
+            state_lock.acquire()
+            state = "waiting"
+            state_lock.release()
         elif state == "waiting":
             state_lock.release()
             x = command_queue_recv.get()
@@ -122,13 +125,14 @@ def main():
             except Exception as e:
                 raise            
         elif state == "play":
-            if i == 5:
-                board.player_troop_out(n)
-            elif board.move_player_troop_possible(n, i, dice):
-                board.move_player_troop(n, i, dice)
-            else:
-                print("Not possible")
-            state_lock.release()
+            pass
+            # if i == 5:
+            #     board.player_troop_out(n)
+            # elif board.move_player_troop_possible(n, i, dice):
+            #     board.move_player_troop(n, i, dice)
+            # else:
+            #     print("Not possible")
+            # state_lock.release()
         elif state == "roll":
             print("state:", state)
 
