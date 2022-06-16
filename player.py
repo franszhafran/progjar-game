@@ -87,6 +87,7 @@ class Player:
             for i in range(troop.position, troop.position + steps + 1):
                 self.last_steps.append(self.player_tiles[i])
                 self.last_steps_index.append(i)
+            print(self.last_steps_index)
             troop.position += steps
             troop.x = self.player_tiles[troop.position]
             if troop.x >= Player.player_number_safezone_start[self.player_number]:

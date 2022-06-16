@@ -41,10 +41,12 @@ def main():
     board.add_player(player_2)
 
     n = 0
+    last_dice = 0
     while True:
         try:
             print("Player number", player.player_number)
             n = player.player_number
+            color = color_map[n]
         except Exception as e:
             continue
         print("acquiring state at main")
@@ -56,28 +58,41 @@ def main():
             state_lock.release()
             i = command_queue.get()
             i = int(i)
-            continue
+            if i == 5:
+                board.player_troop_out(n)
+                func_name = "start{}1".format(color)
+                bar = getattr(eel, func_name)
+                result = bar()
+            else:
+                board.move_player_troop(n, i, last_dice)
+                steps = board.players[n].last_steps_index
+                player = board.players[n]
+                movement = player.process_steps_to_movement(steps)
+                print(movement)
         elif state == "waiting":
             state_lock.release()
             x = command_queue_recv.get()
             state_lock.acquire()
+            print("Got from cmd queue rcv", x)
             print(x)
-            if len(x["data"]) == 0:
-                continue
             try:
                 data = x["data"]
                 for e in data:
                     action = e["action"]
+                    print("Gameplay data append with a {}".format(action))
                     gameplay_data.append(action)
+
+                    if "continue" in action:
+                        continue
                     data = action.split("_")
                     print("Printing dice data", int(data[1]), player.player_number)
 
                     if int(data[1]) != player.player_number:
                         print("Not our action, skipping")
-                        state_lock.release()
                         continue
 
                     dice = int(data[2])
+                    last_dice = dice
                     print("Dice {}".format(dice))
                     board.print_troops()
                     print("Player {} got {} step".format(n, dice))
@@ -86,14 +101,13 @@ def main():
                         print("Skipping")
                         state = "waiting"
                         send_command("continue_" + str(player.player_number))
-                        state_lock.release()
-                        continue
+                        break
                     else:
                         state = "play"
-                    state_lock.release()
+                    print("state now", state)
+                state_lock.release()
             except Exception as e:
-                print(e)
-                continue            
+                raise            
         elif state == "play":
             if i == 5:
                 board.player_troop_out(n)
@@ -150,7 +164,7 @@ def pull_message():
         try:
             if res["status"] == "OK":
                 if len(res["data"]) > 0:
-                    command_queue_recv.put(res)
+                    pass
                 else:
                     global player
                     if player is None:
@@ -172,9 +186,9 @@ def put_command(new_command):
 
 @eel.expose
 def handle_click(element_id):
-    print(element_id)
     if color_map[player.player_number] in element_id:
         eel.alert_func("yeay")
+        command_queue.put(5)
 
 @eel.expose
 def get_dice():
