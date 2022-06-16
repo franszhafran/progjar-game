@@ -73,6 +73,8 @@ def main():
                 player = board.players[n]
                 movement = player.process_steps_to_movement(steps)
                 print(movement)
+                troop_id = "{}-1".format(color)
+                eel.move_troop(troop_id, movement)
             state_lock.acquire()
             state = "waiting"
             state_lock.release()
