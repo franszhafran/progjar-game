@@ -109,12 +109,7 @@
 
     }
   function move(r) {
-    $("#" + r.id).animate(
-      {
-        left: "+=30px",
-      },
-      2
-    );
+    eel.move(r.id)
   }
   function start() {
     $("#green-1").css(

@@ -188,7 +188,7 @@ def pull_message():
                         player = players[int(res["player_number"])]
         except:
             pass
-        time.sleep(10)
+        time.sleep(3)
 
 def start():
     t = threading.Thread(target=main)
@@ -204,12 +204,15 @@ def put_command(new_command):
 @eel.expose
 def handle_click(element_id):
     if color_map[player.player_number] in element_id:
-        eel.alert_func("yeay")
         command_queue.put(5)
 
 @eel.expose
 def get_dice():
     global dice
     return dice
+
+@eel.expose
+def move(element_id):
+    command_queue.put(3)
 
     

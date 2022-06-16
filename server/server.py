@@ -113,7 +113,7 @@ def game_loop():
 				})
 			game["state"] = "roll"
 		# game_lock.release()
-		time.sleep(5)
+		time.sleep(1)
 
 class Server(asyncore.dispatcher):
 	def __init__(self,portnumber):
