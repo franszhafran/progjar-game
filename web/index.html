@@ -116,16 +116,16 @@
     console.log("test")
     console.log(troop_id)
     console.log(movement)
-    // for(var i = 0; i < arr.length; i++){
-    //   let animation = arr[i]
-    //   if("animation" == "up") {
-    //     setTimeout(up, 2000*i, troop_id)
-    //   } else if("animation" == "upleft") {
-    //     setTimeout(upleft, 2000*i, troop_id)
-    //   } else if("animation" == "left") {
-    //     setTimeout(upleft, 2000*i, troop_id)
-    //   }
-    // }
+    for(var i = 0; i < movement.length; i++){
+      let animation = movement[i]
+      if(animation == "up") {
+        setTimeout(up, 2000*i, troop_id)
+      } else if(animation == "upleft") {
+        setTimeout(upleft, 2000*i, troop_id)
+      } else if(animation == "left") {
+        setTimeout(upleft, 2000*i, troop_id)
+      }
+    }
   }
   function start() {
     $("#green-1").css(
