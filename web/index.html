@@ -113,6 +113,7 @@
   }
   eel.expose(move_troop)
   function move_troop(troop_id, movement) {
+    console.log("test")
     var chain = function(el, toAnimate, ix) {
       if(ix < toAnimate.length) {
         $("#" + el).stop().animate(
@@ -123,9 +124,9 @@
             chain(el, toAnimate, ix + 1 )
         })
     }}
-    chain(troop_id, ["a", "b", "c"], 0)
+    chain(troop_id, ["a", "b", "c", "d"], 0)
   }
-  
+
   function start() {
     $("#green-1").css(
       {
