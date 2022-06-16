@@ -17,7 +17,7 @@ game = {
 	"player_data_queue": [queue.Queue(), queue.Queue(), queue.Queue(), queue.Queue()]
 }
 command_queue = queue.Queue()
-game_lock = threading.Lock()
+# game_lock = threading.Lock()
 
 class ProcessTheClient(asyncore.dispatcher_with_send):
 	def handle_read(self):
@@ -43,8 +43,8 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 		self.close()
 
 	def proses(self, rcv, ip):
-		global game_lock
-		game_lock.acquire()
+		# global game_lock
+		# game_lock.acquire()
 		global game
 		print(rcv, ip)
 		index = game["player_data"].index(ip)
@@ -59,7 +59,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 		else:
 			command_queue.put(rcv)
 			res = json.dumps({"status": "OK", "data": ""})
-		game_lock.release()
+		# game_lock.release()
 		return res.encode()
 
 def game_loop():
@@ -69,7 +69,7 @@ def game_loop():
 	last_player = 0
 
 	while True:
-		game_lock.acquire()
+		# game_lock.acquire()
 		print(game["state"])
 		print(game)
 		if game["state"] == "roll":
@@ -91,7 +91,7 @@ def game_loop():
 				player_now = 0
 			game["state"] = "play"
 		elif game["state"] == "play":
-			game_lock.release()
+			# game_lock.release()
 			while True:
 				cmd = command_queue.get()
 				cmd_list = cmd.split("_")
@@ -100,7 +100,7 @@ def game_loop():
 				else:
 					break
 			
-			game_lock.acquire()
+			# game_lock.acquire()
 			print("cmd", cmd)
 			print("appending bawah {}".format("dice_{}_{}".format(player_now, dice)))
 			game["data"].append({
@@ -112,7 +112,7 @@ def game_loop():
 					"action": cmd
 				})
 			game["state"] = "roll"
-		game_lock.release()
+		# game_lock.release()
 		time.sleep(5)
 
 class Server(asyncore.dispatcher):
@@ -125,15 +125,14 @@ class Server(asyncore.dispatcher):
 		logging.warning("running on port {}" . format(portnumber))
 
 	def handle_accept(self):
-		global game_lock
 		pair = self.accept()
 		if pair is not None:
 			sock, addr = pair
 			logging.warning("connection from {}" . format(repr(addr)))
-			game_lock.acquire()
+			# game_lock.acquire()
 			if str(addr[0]) not in game["player_data"]:
 				game["player_data"].append(str(addr[0]))
-			game_lock.release()
+			# game_lock.release()
 			handler = ProcessTheClient(sock)
 			handler.ip = str(addr[0])
 
