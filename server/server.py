@@ -51,7 +51,7 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 		if rcv == "ask":
 			data = []
 			while not game["player_data_queue"][index].empty():
-				data = game["player_data_queue"][index].get()
+				data.append(game["player_data_queue"][index].get())
 			res = json.dumps({"status": "OK", "player_number": int(index), "data": data})
 		else:
 			command_queue.put(rcv)

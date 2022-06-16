@@ -61,9 +61,7 @@ def main():
             state_lock.release()
             x = command_queue_recv.get()
             state_lock.acquire()
-            print("waiting res")
             print(x)
-            print(str(type(x)))
             if len(x["data"]) == 0:
                 continue
             try:
@@ -137,8 +135,7 @@ def send_command(command_str=""):
         command_queue_recv.put(hasil)
         # logging.warning("data received from server:")
         sock.close()
-        print("response from::{}".format(command_str))
-        print(hasil)
+        print("response from::{} {}".format(command_str, str(hasil)))
         return hasil
     except Exception as e:
         print(e)
@@ -149,9 +146,6 @@ def pull_message():
     while True:
         res = send_command("ask")
         try:
-            print("res top")
-            print(res)
-            print(str(type(res)))
             if res["status"] == "OK":
                 if len(res["data"]) > 0:
                     command_queue_recv.put(res)
