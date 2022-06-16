@@ -66,7 +66,7 @@ def main():
                 func_name = "start{}1".format(color)
                 bar = getattr(eel, func_name)
                 result = bar()
-                send_command("troop_out_{}_{}".format(n, 3))
+                send_command("troopout_{}_{}".format(n, 3))
             else:
                 board.move_player_troop(n, i, last_dice)
                 steps = board.players[n].last_steps_index
@@ -90,7 +90,7 @@ def main():
                         continue
                     data = action.split("_")
 
-                    if "troop_out" in action:
+                    if "troopout" in action:
                         player_number = data[1]
                         troop_number = data[2]
                         board.player_troop_out(player_number)
