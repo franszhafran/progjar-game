@@ -51,7 +51,9 @@ class ProcessTheClient(asyncore.dispatcher_with_send):
 		if rcv == "ask":
 			data = []
 			while not game["player_data_queue"][index].empty():
-				data.append(game["player_data_queue"][index].get())
+				chunk = game["player_data_queue"][index].get()
+				print("Got from queue {}".format(str(chunk)))
+				data.append(chunk)
 			res = json.dumps({"status": "OK", "player_number": int(index), "data": data})
 		else:
 			command_queue.put(rcv)
@@ -68,6 +70,7 @@ def game_loop():
 	while True:
 		game_lock.acquire()
 		print(game["state"])
+		print(game)
 		if game["state"] == "roll":
 			dice = random.randint(1, 6)
 			print("appending atas {}".format("dice_{}_{}".format(player_now, dice)))
@@ -76,6 +79,7 @@ def game_loop():
 				"action": "dice_{}_{}".format(player_now, dice)
 			})
 			for i in range(4):
+				print("Put to queue dice_{}_{}".format(player_now, dice))
 				game["player_data_queue"][i].put({
 					"ip": "server",
 					"action": "dice_{}_{}".format(player_now, dice)
@@ -92,7 +96,6 @@ def game_loop():
 				cmd_list = cmd.split("_")
 				if str(cmd_list[1]) != str(last_player):
 					print("continuing, unvalid sender")
-					continue
 				else:
 					break
 			
@@ -103,6 +106,7 @@ def game_loop():
 				"action": cmd
 			})
 			for i in range(4):
+				print("Put to queue cmd {}".format(cmd))
 				game["player_data_queue"][i].put({
 					"action": cmd
 				})
