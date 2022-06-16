@@ -115,7 +115,8 @@
   function move_troop(troop_id, movement) {
     var troop_id_var = troop_id
     console.log("msk")
-    function move_func(value, index, array) {
+    for (let i = 0; i < movement.length; i++) {
+      let value = movement[i]
       console.log(value)
       if(value == "up") {
         up(troop_id_var)
@@ -123,7 +124,6 @@
         right(troop_id_var)
       }
     }
-    movement.forEach(move_func)
   }
   function start() {
     $("#green-1").css(
