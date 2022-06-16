@@ -210,6 +210,7 @@
 
     elComeOut.onclick   = function () {rollDice();};
 
+    eel.expose(rollDice)
     async function rollDice() {
         console.log("msk rolldice")
         eel.put_command(6)
@@ -251,6 +252,8 @@
         console.log(elDiceOne.classList)
     }
     // dice end
+
+  eel.expose(startblue1)
   function startblue1(r) {
     $("#blue-1").animate(
       {
@@ -287,6 +290,7 @@
       
     );
   }
+  eel.expose(startred1)
   function startred1(r) {
     $("#red-1").animate(
       {

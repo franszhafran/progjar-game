@@ -58,11 +58,15 @@ def main():
             state_lock.release()
             i = command_queue.get()
             i = int(i)
+            if i == 6:
+                continue
+            print("got on play", n, i, last_dice)
             if i == 5:
                 board.player_troop_out(n)
                 func_name = "start{}1".format(color)
                 bar = getattr(eel, func_name)
                 result = bar()
+                send_command("troop_out_{}_{}".format(n, 3))
             else:
                 board.move_player_troop(n, i, last_dice)
                 steps = board.players[n].last_steps_index
@@ -85,26 +89,35 @@ def main():
                     if "continue" in action:
                         continue
                     data = action.split("_")
-                    print("Printing dice data", int(data[1]), player.player_number)
 
-                    if int(data[1]) != player.player_number:
-                        print("Not our action, skipping")
-                        continue
+                    if "troop_out" in action:
+                        player_number = data[1]
+                        troop_number = data[2]
+                        board.player_troop_out(player_number)
+                        func_name = "start{}1".format(color_map[player_number])
+                        bar = getattr(eel, func_name)
+                        result = bar()
+                    elif "dice" in action:
+                        print("Printing dice data", int(data[1]), player.player_number)
 
-                    dice = int(data[2])
-                    last_dice = dice
-                    print("Dice {}".format(dice))
-                    board.print_troops()
-                    print("Player {} got {} step".format(n, dice))
+                        if int(data[1]) != player.player_number:
+                            print("Not our action, skipping")
+                            continue
 
-                    if board.player_troops_at_base(n) == 4 and dice != 6:
-                        print("Skipping")
-                        state = "waiting"
-                        send_command("continue_" + str(player.player_number))
-                        break
-                    else:
-                        state = "play"
-                    print("state now", state)
+                        dice = int(data[2])
+                        last_dice = dice
+                        print("Dice {}".format(dice))
+                        board.print_troops()
+                        print("Player {} got {} step".format(n, dice))
+
+                        if board.player_troops_at_base(n) == 4 and dice != 6:
+                            print("Skipping")
+                            state = "waiting"
+                            send_command("continue_" + str(player.player_number))
+                            break
+                        else:
+                            state = "play"
+                        print("state now", state)
                 state_lock.release()
             except Exception as e:
                 raise            
