@@ -65,33 +65,35 @@ def main():
             if len(x["data"]) == 0:
                 continue
             try:
-                x = x["data"]["action"]
-            except:
-                continue
-            print(x)
-            gameplay_data.append(x)
-            data = x.split("_")
-            print("Printing dice data", int(data[1]), player.player_number)
+                data = x["data"]
+                for e in data:
+                    action = e["action"]
+                    gameplay_data.append(action)
+                    data = action.split("_")
+                    print("Printing dice data", int(data[1]), player.player_number)
 
-            if int(data[1]) != player.player_number:
-                print("Not our action, skipping")
-                state_lock.release()
-                continue
+                    if int(data[1]) != player.player_number:
+                        print("Not our action, skipping")
+                        state_lock.release()
+                        continue
 
-            dice = int(data[2])
-            print("Dice {}".format(dice))
-            board.print_troops()
-            print("Player {} got {} step".format(n, dice))
+                    dice = int(data[2])
+                    print("Dice {}".format(dice))
+                    board.print_troops()
+                    print("Player {} got {} step".format(n, dice))
 
-            if board.player_troops_at_base(n) == 4 and dice != 6:
-                print("Skipping")
-                state = "waiting"
-                send_command("continue")
-                state_lock.release()
-                continue
-            else:
-                state = "play"
-            state_lock.release()
+                    if board.player_troops_at_base(n) == 4 and dice != 6:
+                        print("Skipping")
+                        state = "waiting"
+                        send_command("continue_" + str(player.player_number))
+                        state_lock.release()
+                        continue
+                    else:
+                        state = "play"
+                    state_lock.release()
+            except Exception as e:
+                print(e)
+                continue            
         elif state == "play":
             if i == 5:
                 board.player_troop_out(n)

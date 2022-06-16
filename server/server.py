@@ -63,6 +63,7 @@ def game_loop():
 	global dice
 	global command_queue
 	player_now = 0
+	last_player = 0
 
 	while True:
 		game_lock.acquire()
@@ -79,13 +80,22 @@ def game_loop():
 					"ip": "server",
 					"action": "dice_{}_{}".format(player_now, dice)
 				})
+			last_player = player_now
 			player_now += 1
 			if player_now == 2:
 				player_now = 0
 			game["state"] = "play"
 		elif game["state"] == "play":
 			game_lock.release()
-			cmd = command_queue.get()
+			while True:
+				cmd = command_queue.get()
+				cmd_list = cmd.split("_")
+				if str(cmd_list[1]) != str(last_player):
+					print("continuing, unvalid sender")
+					continue
+				else:
+					break
+			
 			game_lock.acquire()
 			print("cmd", cmd)
 			print("appending bawah {}".format("dice_{}_{}".format(player_now, dice)))
