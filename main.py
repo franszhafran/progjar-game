@@ -94,7 +94,7 @@ def main():
                     action = e["action"]
                     print("Gameplay data append with a {}".format(action))
                     gameplay_data.append(action)
-
+                    
                     if "continue" in action:
                         continue
                     data = action.split("_")
@@ -117,6 +117,7 @@ def main():
                             player = board.players[player_number]
                             movement = player.process_steps_to_movement(steps)
                             eel.move_troop(func_name, movement)
+                            state = "waiting"
                     elif "dice" in action:
                         print("Printing dice data", int(data[1]), player.player_number)
 
