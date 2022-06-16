@@ -115,6 +115,7 @@
   function move_troop(troop_id, movement) {
     var troop_id_var = troop_id
     console.log("msk")
+    console.log(movement)
     for (let i = 0; i < movement.length; i++) {
       let value = movement[i]
       console.log(value)
@@ -143,7 +144,8 @@
       2
     );
   }
-  function up() {
+  function up(r) {
+    console.log(r)
     $("#" + r).animate(
       {
         top: "-=39px",
