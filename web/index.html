@@ -128,6 +128,12 @@
         setTimeout(right, 2000*i, troop_id)
       } else if(animation == "upright") {
         setTimeout(rightup, 2000*i, troop_id)
+      } else if(animation == "down") {
+        setTimeout(down, 2000*i, troop_id)
+      } else if(animation == "rightdown") {
+        setTimeout(rightdown, 2000*i, troop_id)
+      } else if(animation == "downleft") {
+        setTimeout(downleft, 2000*i, troop_id)
       }
     }
   }
@@ -155,7 +161,7 @@
       {
         top: "-=39px",
       },
-      2
+      1
     );
   }
   function down(r) {
@@ -163,7 +169,7 @@
       {
         top: "+=39px",
       },
-      2
+      1
     );
   }
   function left(r) {
@@ -171,7 +177,7 @@
       {
         left: "-=39px",
       },
-      2
+      1
     );
   }
   function upleft(r) {
@@ -180,7 +186,7 @@
         top: "-=53px",
         left: "-=51px",
       },
-      2
+      1
     );
   }
   function downleft(r) {
@@ -189,7 +195,7 @@
         top: "+=53px",
         left: "-=51px",
       },
-      2
+      1
     );
   }
   function right(r) {
@@ -197,7 +203,7 @@
       {
         left: "+=39px",
       },
-      2
+      1
     );
   }
   function rightup(r) {
@@ -206,7 +212,7 @@
         top: "-=53px",
         left: "+=51px",
       },
-      2
+      1
     );
   }
   function rightdown(r) {
@@ -215,7 +221,7 @@
         top: "+=53px",
         left: "+=53px",
       },
-      2
+      1
     );
   }
 
