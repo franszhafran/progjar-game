@@ -79,6 +79,9 @@ def game_loop():
 					"ip": "server",
 					"action": "dice_{}_{}".format(player_now, dice)
 				})
+			player_now += 1
+			if player_now == 2:
+				player_now = 0
 			game["state"] = "play"
 		elif game["state"] == "play":
 			game_lock.release()
@@ -93,9 +96,6 @@ def game_loop():
 				game["player_data_queue"][i].put({
 					"action": cmd
 				})
-			player_now += 1
-			if player_now == 2:
-				player_now = 0
 			game["state"] = "roll"
 		game_lock.release()
 		time.sleep(5)
