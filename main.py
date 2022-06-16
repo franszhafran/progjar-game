@@ -68,13 +68,17 @@ def main():
                 result = bar()
                 send_command("troopout_{}_{}".format(n, 3))
             else:
+                print("test")
                 board.move_player_troop(n, i, last_dice)
                 steps = board.players[n].last_steps_index
                 player = board.players[n]
                 movement = player.process_steps_to_movement(steps)
                 troop_id = "{}-1".format(color)
+                print("dd")
                 eel.move_troop(troop_id, movement)
+                print("aa")
                 send_command("troopmove_{}_{}_{}".format(n, 3, last_dice))
+                print("gg")
             state_lock.acquire()
             state = "waiting"
             state_lock.release()
@@ -136,15 +140,6 @@ def main():
                 state_lock.release()
             except Exception as e:
                 raise            
-        elif state == "play":
-            pass
-            # if i == 5:
-            #     board.player_troop_out(n)
-            # elif board.move_player_troop_possible(n, i, dice):
-            #     board.move_player_troop(n, i, dice)
-            # else:
-            #     print("Not possible")
-            # state_lock.release()
         elif state == "roll":
             print("state:", state)
 
